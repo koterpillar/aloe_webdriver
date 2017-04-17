@@ -79,6 +79,17 @@ class TestSteps(FeatureTest):
         """
 
     @feature()
+    def test_I_slowly_fill_in(self):
+        """
+        When I visit test page "slow_text_field"
+        And I fill in "input" with "input"
+        Then I should see "Fast: iininpinpu Slow: input"
+        When I visit test page "slow_text_field"
+        And I slowly fill in "input" with "input"
+        Then I should see "Fast: Slow: input"
+        """
+
+    @feature()
     def test_checkboxes_checked(self):
         """
         Given I visit test page "basic_page"

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A text field requiring slow input</title>
+  </head>
+  <body>
+    <input type="text" id="input" onkeypress="copy_key(event)" />
+    <span id="fast">Fast: </span>
+    <span id="slow">Slow: </span>
+    <script>
+      function copy_key(event) {
+          var key = event.which || event.keyCode;
+          var input = document.getElementById("input");
+
+          /* Copy to the slow span each key pressed */
+          var slow = document.getElementById("slow");
+          slow.innerHTML = slow.innerHTML + String.fromCharCode(key);
+
+          /* Copy to the fast span the contents of the input field */
+          var fast = document.getElementById("fast");
+          fast.innerHTML = fast.innerHTML + input.value;
+
+          /* And clear the input field after a 1 ms delay */
+          setTimeout(function() {input.value = "";}, 1);
+      }
+    </script>
+  </body>
+</html>
