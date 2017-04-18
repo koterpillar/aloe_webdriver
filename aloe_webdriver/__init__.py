@@ -19,8 +19,9 @@ from aloe_webdriver.util import (
     find_field,
     find_option,
     option_in_select,
-    wait_for,
+    retry_on_timeout,
     string_literal,
+    wait_for,
 )
 
 from selenium.webdriver.support.ui import Select
@@ -64,6 +65,7 @@ def contains_content(browser, content):
 
 @step('I visit "(.*?)"$')
 @step('I go to "(.*?)"$')
+@retry_on_timeout
 def visit(self, url):
     """Navigate to the provided (fully qualified) URL."""
     world.browser.get(url)

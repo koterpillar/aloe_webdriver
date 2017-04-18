@@ -14,6 +14,8 @@ import operator
 from copy import copy
 from functools import wraps
 from time import time, sleep
+from functools import wraps
+from selenium.common.exceptions import TimeoutException
 
 try:
     reduce
@@ -505,6 +507,35 @@ def wait_for(func):
                     start = time()
                 if time() - start < timeout:
                     sleep(CHECK_EVERY)
+                    continue
+                else:
+                    raise
+
+    return wrapped
+
+
+RETRIES = 5
+
+
+def retry_on_timeout(func):
+    """
+    A decorator to invoke a function, retrying on timeout exceptions for a
+    specified number of times.
+
+    Adds a kwarg `retires` to `func` which is the number of times to try
+    for (default 5).
+    """
+
+    @wraps(func)
+    def wrapped(*args, **kwargs):
+        retries = kwargs.pop('retries', RETRIES)
+
+        while True:
+            try:
+                return func(*args, **kwargs)
+            except TimeoutException:
+                retries -= 1
+                if retries > 0:
                     continue
                 else:
                     raise
